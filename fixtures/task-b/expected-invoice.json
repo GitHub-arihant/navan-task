@@ -1,0 +1,41 @@
+{
+  "create_invoice_body_single": { "transaction_id": "<id from POST /transactions>" },
+  "create_invoice_body_trip": {
+    "transaction_ids": [
+      "<flight id>",
+      "<hotel id>",
+      "<rail id>",
+      "<trip_fee id>",
+      "<agent_call_fee id>"
+    ]
+  },
+  "currency": "EUR",
+  "transaction_types_included": ["flight", "hotel", "rail", "navan_fee"],
+  "navan_fee_kinds_included": ["trip_fee", "agent_call_fee"],
+  "line_count_minimum": 5,
+  "totals": {
+    "flight": 220.0,
+    "hotel": 331.7,
+    "rail": 94.0,
+    "trip_fee": 25.0,
+    "agent_call_fee": 15.0,
+    "grand_total": 685.7
+  },
+  "tax_rollup_example": [
+    { "name": "Airport tax", "amount": 15.0 },
+    { "name": "VAT", "rate": 0.07, "amount": 21.7 }
+  ],
+  "fee_rollup_example": [
+    { "name": "YQ", "amount": 25.0 },
+    { "name": "Booking fee", "amount": 4.0 }
+  ],
+  "metadata_checks": {
+    "flight_has_coupons_and_flight_number": true,
+    "hotel_has_name_and_address": true,
+    "rail_has_legs": true,
+    "navan_fee_has_fee_kind": true
+  },
+  "snapshot_rule": "GET invoice after mutating the flight total must still show flight contribution 220.00",
+  "mixed_currency": "POST invoice with EUR + USD transactions must return 409",
+  "duplicate_rule": "Two POSTs with external_id flight-TXL-LHR-2026-03-11 must yield one stored transaction"
+}
